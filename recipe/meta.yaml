@@ -26,6 +26,7 @@ source:
   sha256: fb04bba53391b1a080d5e84e8361b490399c64e09f8156ec768cb4cdfe0a078c
   patches:
     - patches/0001-add-so-version.patch
+    - patches/0002-revert-package.cmake-change.patch
 
 build:
   number: 0
