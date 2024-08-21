@@ -1,6 +1,6 @@
 --- CMakeLists.txt.orig      2024-07-05 14:24:49.031916858 -0500
 +++ CMakeLists.txt           2024-07-05 14:25:32.952609960 -0500
-@@ -74,2 +74,25 @@
+@@ -73,2 +73,25 @@
         add_library(${PROJECT_NAME} SHARED ${MULTI_SOURCES})
 +       set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
 +       if (WIN32)
@@ -25,4 +25,4 @@
 +                 COMPONENT Runtime
 +         )
 +       endif ()
- 	if (NOT WIN32)
+ 	else ()
