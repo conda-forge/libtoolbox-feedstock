@@ -29,7 +29,7 @@ source:
     - patches/0002-revert-package.cmake-change.patch
 
 build:
-  number: 1
+  number: 2
 
 requirements:
   build:
@@ -57,7 +57,7 @@ outputs:
       - lib/libtoolbox.so  # [linux]
       - lib/libtoolbox.dylib  # [osx]
       - Library\\lib\\toolbox.lib  # [win]
-      - Library\\lib\\toolbox.{{ so_major_version }}.lib  # [win]
+      - Library\\lib\\toolbox-{{ so_major_version }}.lib  # [win]
       - Library\\bin\\toolbox.dll  # [win]
 
       # Configuration files
@@ -106,7 +106,7 @@ outputs:
         - test -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}  # [unix]
         - if not exist %PREFIX%\\Library\\bin\\toolbox%SHLIB_EXT% exit 1  # [win]
         - if not exist %PREFIX%\\Library\\lib\\toolbox.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\toolbox.{{ so_major_version }}.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\toolbox-{{ so_major_version }}.lib exit 1  # [win]
 
         # Configuration files
         - test -f ${PREFIX}/lib/pkgconfig/toolbox.pc  # [unix]
@@ -129,7 +129,7 @@ outputs:
 
         # Key testing phase: This test needs both libbtoolbox.so.x and libctoolbox.so.x
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  # [linux]
-        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libtoolbox.3.dylib" ./bin/toolbox-test)  # [osx]
+        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libtoolbox.{{ so_major_version }}.dylib" ./bin/toolbox-test)  # [osx]
         - cd test-release\\bin  # [win]
         - toolbox-test.exe  # [win]
 
@@ -140,10 +140,9 @@ outputs:
     files:
       - lib/libtoolbox.so.{{ so_major_version }}  # [linux]
       - lib/libtoolbox.{{ so_major_version }}.dylib  # [osx]
-      - Library\\bin\\toolbox.{{ so_major_version }}.dll  # [win]
+      - Library\\bin\\toolbox-{{ so_major_version }}.dll  # [win]
       - lib/libtoolbox.so.{{ version }}  # [linux]
       - lib/libtoolbox.{{ version }}.dylib  # [osx]
-      - Library\\bin\\toolbox.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -164,10 +163,9 @@ outputs:
         # Versioned toolbox library
         - test -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libtoolbox.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\toolbox.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\toolbox-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libtoolbox.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\toolbox.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No non-versioned library
         - test ! -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}  # [unix]
@@ -176,7 +174,7 @@ outputs:
 
         # Key testing phase: This test needs both libbtoolbox.so.x and libctoolbox.so.x
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  # [linux]
-        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libtoolbox.3.dylib" ./bin/toolbox-test)  # [osx]
+        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libtoolbox.{{ so_major_version }}.dylib" ./bin/toolbox-test)  # [osx]
         - cd test-release\\bin  # [win]
         - toolbox-test.exe  # [win]
 
