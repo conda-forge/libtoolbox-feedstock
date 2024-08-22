@@ -27,6 +27,7 @@ source:
   patches:
     - patches/0001-add-so-version.patch
     - patches/0002-revert-package.cmake-change.patch
+    - patches/0003-include-cstdint-strings.hpp.patch  # [linux]
 
 build:
   number: 2
