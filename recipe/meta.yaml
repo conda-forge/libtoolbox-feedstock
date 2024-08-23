@@ -8,7 +8,7 @@
 ] %}
 {% set data_h = [
   "base64.h", "bytes_data.h", "literals.h", "bytes_array.h", "transformers.h",
-  "bytes_buffer.h", "utils.h", "basic_data.h", "slice.h",
+  "bytes_buffer.h", "utils.h", "basic_data.h",
 ] %}
 {% set strings_h = ["decimal_formatter.h", "regex.h"] %}
 {% set toolbox_header_paths = {
