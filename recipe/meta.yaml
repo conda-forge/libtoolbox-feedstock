@@ -30,7 +30,7 @@ source:
     - patches/0003-include-cstdint-strings.hpp.patch  # [linux]
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
