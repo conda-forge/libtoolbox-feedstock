@@ -26,7 +26,7 @@ source:
   sha256: 7f9cc4fd67c952cf143a74dd516a971c5bf8c85e66efc3830676758fddf48853
   patches:
     - patches/0001-add-so-version.patch
-    - patches/0003-include-cstdint-strings.hpp.patch  # [linux]
+    - patches/0003-include-cstdint-utils.hpp.patch  # [linux]
 
 build:
   number: 1
