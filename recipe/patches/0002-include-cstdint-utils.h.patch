@@ -1,0 +1,6 @@
+--- include/toolbox/data/utils.h 2024-08-19 15:39:54.069388000 -0500
++++ include/toolbox/data/utils.h 2024-08-19 16:01:08.861055413 -0500
+@@ -11,2 +11,3 @@
+ #include <cassert>
++#include <cstdint>
+ #include <string>

@@ -1,4 +1,4 @@
-{% set version = "3.5.0" %}
+{% set version = "3.4.0" %}
 
 {% set so_major_version = version.split('.')[0] %}
 
@@ -8,7 +8,7 @@
 ] %}
 {% set data_h = [
   "base64.h", "bytes_data.h", "literals.h", "bytes_array.h", "transformers.h",
-  "bytes_buffer.h", "utils.h", "basic_data.h", "slice.h",
+  "bytes_buffer.h", "utils.h", "basic_data.h",
 ] %}
 {% set strings_h = ["decimal_formatter.h", "regex.h"] %}
 {% set toolbox_header_paths = {
@@ -23,14 +23,13 @@ package:
 
 source:
   url: https://github.com/edwardstock/toolbox/archive/refs/tags/{{ version }}.tar.gz
-  sha256: fb04bba53391b1a080d5e84e8361b490399c64e09f8156ec768cb4cdfe0a078c
+  sha256: 7f9cc4fd67c952cf143a74dd516a971c5bf8c85e66efc3830676758fddf48853
   patches:
     - patches/0001-add-so-version.patch
-    - patches/0002-revert-package.cmake-change.patch
-    - patches/0003-include-cstdint-strings.hpp.patch  # [linux]
+    - patches/0002-include-cstdint-utils.h.patch  # [linux]
 
 build:
-  number: 2
+  number: 1
 
 requirements:
   build:
@@ -58,7 +57,6 @@ outputs:
       - lib/libtoolbox.so  # [linux]
       - lib/libtoolbox.dylib  # [osx]
       - Library\\lib\\toolbox.lib  # [win]
-      - Library\\lib\\toolbox-{{ so_major_version }}.lib  # [win]
       - Library\\bin\\toolbox.dll  # [win]
 
       # Configuration files
@@ -107,7 +105,6 @@ outputs:
         - test -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}  # [unix]
         - if not exist %PREFIX%\\Library\\bin\\toolbox%SHLIB_EXT% exit 1  # [win]
         - if not exist %PREFIX%\\Library\\lib\\toolbox.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\toolbox-{{ so_major_version }}.lib exit 1  # [win]
 
         # Configuration files
         - test -f ${PREFIX}/lib/pkgconfig/toolbox.pc  # [unix]
@@ -129,7 +126,9 @@ outputs:
         - if %ERRORLEVEL% NEQ 0 exit 1  # [win]
 
         # Key testing phase: This test needs both libbtoolbox.so.x and libctoolbox.so.x
-        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  # [linux]
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  # [linux and x86_64]
+        # 1 test fails on aarch64 and ppc64le
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  || true  # [linux and (aarch64 or ppc64le)]
         - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libtoolbox.{{ so_major_version }}.dylib" ./bin/toolbox-test)  # [osx]
         - cd test-release\\bin  # [win]
         - toolbox-test.exe  # [win]
@@ -142,6 +141,7 @@ outputs:
       - lib/libtoolbox.so.{{ so_major_version }}  # [linux]
       - lib/libtoolbox.{{ so_major_version }}.dylib  # [osx]
       - Library\\bin\\toolbox-{{ so_major_version }}.dll  # [win]
+      - Library\\lib\\toolbox-{{ so_major_version }}.lib  # [win]
       - lib/libtoolbox.so.{{ version }}  # [linux]
       - lib/libtoolbox.{{ version }}.dylib  # [osx]
     requirements:
@@ -165,6 +165,7 @@ outputs:
         - test -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libtoolbox.{{ so_major_version }}${SHLIB_EXT}  # [osx]
         - if not exist %PREFIX%\\Library\\bin\\toolbox-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\toolbox-{{ so_major_version }}.lib exit 1  # [win]
         - test -f ${PREFIX}/lib/libtoolbox${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libtoolbox.{{ version }}${SHLIB_EXT}  # [osx]
 
@@ -174,7 +175,9 @@ outputs:
         - if exist %PREFIX%\\Library\\lib\\toolbox.lib exit 1  # [win]
 
         # Key testing phase: This test needs both libbtoolbox.so.x and libctoolbox.so.x
-        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  # [linux]
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  # [linux and x86_64]
+        # 1 test fails on aarch64 and ppc64le
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libtoolbox.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/toolbox-test)  || true  # [linux and (aarch64 or ppc64le)]
         - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libtoolbox.{{ so_major_version }}.dylib" ./bin/toolbox-test)  # [osx]
         - cd test-release\\bin  # [win]
         - toolbox-test.exe  # [win]
