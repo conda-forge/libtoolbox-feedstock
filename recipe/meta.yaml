@@ -26,7 +26,7 @@ source:
   sha256: 12a821ee9a6b4b3291034cb8e79a12e5ddc4e5f02a9e5748743ec193e3805002
   patches:
     - patches/0001-add-so-version.patch
-    - patches/0002-revert-package.cmake-change.patch
+    # - patches/0002-revert-package.cmake-change.patch
     - patches/0003-include-cstdint-strings.hpp.patch  # [linux]
 
 build:
