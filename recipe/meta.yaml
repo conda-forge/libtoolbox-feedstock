@@ -1,4 +1,4 @@
-{% set version = "3.5.0" %}
+{% set version = "3.5.1" %}
 
 {% set so_major_version = version.split('.')[0] %}
 
@@ -23,14 +23,14 @@ package:
 
 source:
   url: https://github.com/edwardstock/toolbox/archive/refs/tags/{{ version }}.tar.gz
-  sha256: fb04bba53391b1a080d5e84e8361b490399c64e09f8156ec768cb4cdfe0a078c
+  sha256: 12a821ee9a6b4b3291034cb8e79a12e5ddc4e5f02a9e5748743ec193e3805002
   patches:
     - patches/0001-add-so-version.patch
-    - patches/0002-revert-package.cmake-change.patch
+    # - patches/0002-revert-package.cmake-change.patch
     - patches/0003-include-cstdint-strings.hpp.patch  # [linux]
 
 build:
-  number: 3
+  number: 0
 
 requirements:
   build:
